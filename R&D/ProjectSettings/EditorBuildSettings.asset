@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: c1a07e5f477aaa244bd7fa04c945c4a3
+  - enabled: 0
+    path: Assets/Scenes/Otamesi.unity
+    guid: d9ddfdd1f0474284889edb4dd7d20cbe
+  - enabled: 1
+    path: Assets/Scenes/Track_BackUp.unity
+    guid: 9d9cfdb663c19ae408b43e001528c8ed
+  - enabled: 1
+    path: Assets/Scenes/Result.unity
+    guid: 57c4fe39e7b1f944e86094f2d6a18457
+  - enabled: 1
+    path: Assets/naichilab/unity-simple-ranking/Scenes/Ranking.unity
+    guid: 152244f5855414ac4a3874f14efa583c
+  - enabled: 1
+    path: Assets/Scenes/Track 1.unity
+    guid: a3dd2eea76fc1e546b946cd123f8d3d5
+  m_configObjects: {}
