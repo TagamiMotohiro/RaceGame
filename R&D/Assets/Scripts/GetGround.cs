@@ -72,7 +72,9 @@ public class GetGround : MonoBehaviour
     {
 		//接地している
 		Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+        //床の法線ベクトルとY軸単位ベクトルから接地するための回転を生成
 		this.transform.rotation = q * this.transform.rotation;
+        //現在の回転に対して掛け合わせる
 
 		//pos.y = hit.point.y + player_height;
 		//transform.position = pos;//transformに代入
