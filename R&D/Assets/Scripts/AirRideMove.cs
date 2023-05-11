@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 public class AirRideMove : MonoBehaviour
 {
     //ボタン名はnitendo switch pro コントローラーを想定して記載

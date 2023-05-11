@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 public class GameCtrl : MonoBehaviour
 {
@@ -17,11 +16,11 @@ public class GameCtrl : MonoBehaviour
     void Update()
     {
         //escで現在のシーンをロードし直し
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        if (Keyboard.current.tabKey.wasPressedThisFrame)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             SceneManager.LoadScene(loadscene.name);
         }
