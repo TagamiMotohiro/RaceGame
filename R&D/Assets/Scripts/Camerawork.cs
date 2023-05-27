@@ -25,10 +25,6 @@ public class Camerawork : MonoBehaviour
         {
             camerarotate();
         }
-        else//ƒJƒƒ‰‚Ì‰ñ“]‚ªû‚Ü‚Á‚½‚çˆ—‚ğ‚â‚ß‚Ä•âŠ®—p‚Ìt‚Ì’l‚ğ‚O‚É‚·‚é
-        {
-            t = 0;
-        }
 		//this.transform.rotation=Quaternion.FromToRotation(transform.forward,player.transform.position);
 		//this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.LookRotation(player.transform.position-this.transform.position), 180.0f * Time.deltaTime);
     }

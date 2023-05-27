@@ -5,20 +5,26 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class AirRideMove : MonoBehaviour
 {
-    //ボタン名はnitendo switch pro コントローラーを想定して記載
+    bool isStert;
+    Vector3 velocity;//移動するベクトル
+    float speed;//単位移動速度
+    [Header("プレイヤーステータス")]
     [SerializeField]
-    private float max_Speed;//最高速
-    private float speed;//単位移動速度
-    public bool isStert;
-    private Vector3 velocity;//移動するベクトル
-    private float player_Height;//プレイヤーの大きさ（半径）
-    public float push_friction;//Aボタンを押したときの減速率
-    public float kasoku;//加速
-    public float charge;//Aボタンを押したときにタンクにたまる力の単位量
-    public float charge_Tank;//現在のチャージ量
-    public float Max_charge;//チャージの最大値
-    public bool isPush;//Aボタンが押されている
-    public bool pushRelesed;//Aボタンが離された
+    float max_Speed;//最高速
+    [SerializeField]
+    float player_Height;//プレイヤーの大きさ（半径）
+    [SerializeField]
+    float push_friction;//Aボタンを押したときの減速率
+    [SerializeField]
+    float accel;//加速
+    [SerializeField]
+    float charge;//Aボタンを押したときにタンクにたまる力の単位量
+    [SerializeField]
+    float charge_Tank;//現在のチャージ量
+    [SerializeField]
+    float Max_charge;//チャージの最大値
+    bool isPush;//Aボタンが押されている
+    bool pushRelesed;//Aボタンが離された
     
     RaycastHit hit = new RaycastHit();
     
@@ -53,7 +59,7 @@ public class AirRideMove : MonoBehaviour
                 speed = max_Speed;//即座に最高速に
             }
             charge_Tank = 0;//走っている間はチャージ０
-            speed += kasoku * Time.deltaTime;//加速
+            speed += accel * Time.deltaTime;//加速
         }
         if (isPush==true)//Aボタンが押されていたら
         {
@@ -72,7 +78,7 @@ public class AirRideMove : MonoBehaviour
     {
         if (Physics.SphereCast(this.transform.position, player_Height, this.transform.forward, out hit)/*正面方向の判定*/)
         {
-            if (hit.collider.tag != "Wall"&&hit.collider.tag!="Player"){ return false;}
+            if (hit.collider.tag != "Wall"&&(hit.collider.tag!="Player"&&hit.collider.tag!="NPC")){ return false;}
             if (Vector3.SqrMagnitude(hit.point - this.transform.position) < 1f/*rayが当たったポイントと自身のposition間のベクトルの大きさが1未満になったら*/)
             {
                 return true;
@@ -138,7 +144,7 @@ public class AirRideMove : MonoBehaviour
     { 
         isStert=true;
     }
-    //以下数値渡し関数
+    //以下GetterPutter関数
     public float GetPlayer_Height()
     {
         return player_Height;
@@ -146,6 +152,14 @@ public class AirRideMove : MonoBehaviour
     public bool GetIsPush()
     {
         return isPush;
+    }
+    public void SetIsPush(bool b)
+    {
+        isPush = b;
+    }
+    public void SetIsPushRereced(bool b)
+    {
+        pushRelesed = b;
     }
     public float GetCharge()
     {

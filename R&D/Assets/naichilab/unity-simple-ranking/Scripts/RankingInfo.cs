@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace naichilab
 {
+    //こちらのコードはニフクラ様の提供されているオンラインランキング機能のコードになります。
     /// <summary>
     /// １つのリーダーボード情報
     /// </summary>

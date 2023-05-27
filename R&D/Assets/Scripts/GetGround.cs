@@ -13,7 +13,7 @@ public class GetGround : MonoBehaviour
     bool isground = true;//Ú’n”»’è 
    
     public float senkai;//ù‰ñ«”\
-    public float horizontal;//x²“ü—Íæ“¾
+    float horizontal;//x²“ü—Íæ“¾
     private float origin_Senkai;
     
     // Start is called before the first frame update
@@ -123,6 +123,10 @@ public class GetGround : MonoBehaviour
         {
             senkai = origin_Senkai;
         }
+    }
+    public void PlusHorizontal(float input)
+    {
+        horizontal += input;
     }
     public float getSenkai()
     {

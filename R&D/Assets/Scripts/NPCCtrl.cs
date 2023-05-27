@@ -4,59 +4,41 @@ using UnityEngine;
 
 public class NPCCtrl : MonoBehaviour
 {
-    static int a = 10;
-    const int i = 10;
-    bool[,] aa= new bool[a,i];
+    public enum NPCCharacter
+    {
+        InCourse,
+        Nomal,
+        OutCourse
+    }
     // Start is called before the first frame update
-    List<GameObject> check_Points = new List<GameObject>();
-	List<GameObject> follow_Points = new List<GameObject>();
-	AirRideMove move_Script;
+    //チェックポイント一覧
+    [SerializeField]
+    GameObject[] check_Points=new GameObject[0];
+    [SerializeField]
+    //チェックポイント内の実際に追うポイント一覧
+    GameObject[] follow_Points=new GameObject[0];
+	AirRideMove moveScript;
     GetGround senkai_Script;
     GameObject active_Follow_Point;
     GameObject active_Point;
     int Point_Num;
+    [Header("目標地点からどのくらい角度があるとブレーキするか")]
     [SerializeField]
-    int character_Num;
+    float brakeBorderLine;
+    [Header("どんなコーナリングをするか")]
     [SerializeField]
-    float angle_Rad;
-    [SerializeField]
-    float direction;
-    [SerializeField]
+    NPCCharacter cournaringCharacter;
+    float followPointAngle;
     float angle;
-    [SerializeField]
     Vector3 cross;
     RaycastHit hit;
     void Start()
-    {
-        move_Script = this.GetComponent<AirRideMove>();
-        senkai_Script = this.GetComponent<GetGround>();
+    {  
         Point_Num = 0;
-        for (int i = 0; i < 25; i++)
-        {
-            check_Points.Add(GameObject.Find("Point (" + i.ToString("D2") + ")"));
-            //フィールド全域のPointを取得
-        }
-        switch (character_Num)//性格の値によってコース取りを変化させる
-        { 
-            case 0:
-                for (int i = 0; i < check_Points.Count; i++)
-                {
-                    follow_Points.Add(GameObject.Find("Point (" + i.ToString("D2") + ")"));
-                }
-            break;
-            case 1:
-				for (int i = 0; i < check_Points.Count; i++)
-				{
-					follow_Points.Add(GameObject.Find("Point (" + i.ToString("D2") + ")").transform.GetChild(0).gameObject);
-				}
-            break ;
-            case 2:
-				for(int i = 0; i < check_Points.Count; i++)
-				{
-					follow_Points.Add(GameObject.Find("Point (" + i.ToString("D2") + ")").transform.GetChild(1).gameObject);
-				}
-             break;
-		}
+        moveScript = this.GetComponent<AirRideMove>();
+        senkai_Script = this.GetComponent<GetGround>();
+
+       
         active_Follow_Point = follow_Points[Point_Num];
         active_Point = check_Points[Point_Num];
     }
@@ -67,9 +49,8 @@ public class NPCCtrl : MonoBehaviour
         Vector3 pos = this.transform.position-active_Follow_Point.transform.position;
         cross = Vector3.Cross(this.transform.forward,pos);
         angle = Vector3.Angle(this.transform.forward,pos)*cross.y;
-        angle_Rad = angle * Mathf.Deg2Rad;
+        followPointAngle = angle * Mathf.Deg2Rad;
         Debug.DrawLine(this.transform.position,active_Follow_Point.transform.position, Color.red);
-        Debug.DrawLine(this.transform.position, this.transform.position+cross, Color.green);
         NPCSenkai();
         PointManage();
     }
@@ -80,7 +61,7 @@ public class NPCCtrl : MonoBehaviour
             if (hit.collider.tag != "CheckPoint") { return; }    
             if (Vector3.SqrMagnitude(this.transform.position - hit.point) < 1f&&hit.collider.gameObject==active_Point)
             {
-                if (Point_Num == check_Points.Count-1)
+                if (Point_Num == check_Points.Length-1)
                 {
                     Point_Num = 0;
                     active_Follow_Point=follow_Points[Point_Num];
@@ -93,35 +74,46 @@ public class NPCCtrl : MonoBehaviour
             }
         }
     }
-    void GetNPCCharacter(int num)
+    void NPCSenkai()//コースに合わせてNPCが旋回
     {
-        this.character_Num = num;
-    }
-    void NPCSenkai()
-    {
-        if (angle_Rad > 0)
+        //曲がるべきコーナーが緩やかだったらブレーキをかけずに旋回
+        if (followPointAngle > 0)
         {
-            senkai_Script.horizontal-=senkai_Script.getSenkai()*Time.deltaTime;
+            senkai_Script.PlusHorizontal(-(senkai_Script.getSenkai() * Time.deltaTime));
         }
-        if (angle_Rad < 0)
+        if (followPointAngle < 0)
         {
-            senkai_Script.horizontal+=senkai_Script.getSenkai()*Time.deltaTime;
+            senkai_Script.PlusHorizontal(senkai_Script.getSenkai() * Time.deltaTime);
         }
-        if (angle_Rad > 30 || angle_Rad < -30)
+        //設定した値以上だった場合ブレーキ(push)をかける
+        if (followPointAngle > brakeBorderLine || followPointAngle < -brakeBorderLine)
         {
-            move_Script.isPush = true;
+            moveScript.SetIsPush(true);
             return;
         }
         else
         {
-            if (move_Script.GetIsPush())
+            if (moveScript.GetIsPush())
             {
-                move_Script.pushRelesed = true;
+                moveScript.SetIsPushRereced(true);
             }
-            else {
-                move_Script.pushRelesed = false;
+            else
+            {
+                moveScript.SetIsPushRereced(false);
             }
-            move_Script.isPush = false;
+            moveScript.SetIsPush(false);
         }
+    }
+    public NPCCharacter GetCharacter()
+    {
+        return cournaringCharacter;
+    }
+    public void AddCheckPoint(GameObject[] point)
+    {
+        check_Points = point;
+    }
+    public void AddFollowPoint(GameObject[] point)
+    {
+        follow_Points = point;
     }
 }

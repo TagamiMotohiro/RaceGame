@@ -30,7 +30,6 @@ public class RaceManeger : MonoBehaviour
     {
         goal_Line = GameObject.Find("Goal_Line");
         goal_Line.SetActive(false);
-        player.AddRange(GameObject.FindGameObjectsWithTag("Player"));
         Goal_Time_Second = 0;
         Goal_minute = 0;
         now_Lap = 0;
