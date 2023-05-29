@@ -37,8 +37,6 @@ public class NPCCtrl : MonoBehaviour
         Point_Num = 0;
         moveScript = this.GetComponent<AirRideMove>();
         senkai_Script = this.GetComponent<GetGround>();
-
-       
         active_Follow_Point = follow_Points[Point_Num];
         active_Point = check_Points[Point_Num];
     }
@@ -54,12 +52,12 @@ public class NPCCtrl : MonoBehaviour
         NPCSenkai();
         PointManage();
     }
-    void PointManage()
+    void PointManage()//チェックポイントの管理
     {
         if (Physics.SphereCast(this.transform.position, this.transform.localScale.y / 2, this.transform.forward, out hit))
         {
-            if (hit.collider.tag != "CheckPoint") { return; }    
-            if (Vector3.SqrMagnitude(this.transform.position - hit.point) < 1f&&hit.collider.gameObject==active_Point)
+            if (hit.collider.tag != "CheckPoint") { return; } //チェックポイント以外に当たったら無視  
+            if (Vector3.SqrMagnitude(this.transform.position - hit.point) < 1f&&hit.collider.gameObject==active_Point)//チェックポイントに当たったら
             {
                 if (Point_Num == check_Points.Length-1)
                 {
@@ -68,8 +66,8 @@ public class NPCCtrl : MonoBehaviour
                     active_Point = check_Points[Point_Num];
                     return;
                 }
-                Point_Num++;
-				active_Follow_Point = follow_Points[Point_Num];
+                Point_Num++;//ポイント番号を一つ進める
+				active_Follow_Point = follow_Points[Point_Num];//一つ進めた番号のポイントを次に追跡開始
 				active_Point = check_Points[Point_Num];
             }
         }

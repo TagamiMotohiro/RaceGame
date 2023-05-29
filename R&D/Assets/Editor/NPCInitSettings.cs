@@ -10,32 +10,31 @@ public class NPCInitSettings : MonoBehaviour
     public static void NPCInit()
     {
         GameObject[] NPClist = GameObject.FindGameObjectsWithTag("NPC");
-        List<GameObject> checkpointList = new List<GameObject>();
-        for (int i = 0; i < 25; i++) {
-            checkpointList.Add(GameObject.Find("Point (" + i.ToString("D2") + ")"));
-        }
+        GameObject[] checkpointList = GameObject.FindGameObjectsWithTag("CheckPoint");
+        //NPCとチェックポイントを取得
+        
         foreach (GameObject item in NPClist) {
             NPCCtrl nItem = item.GetComponent<NPCCtrl>();
             List<GameObject> followPointList = new List<GameObject>();
-            nItem.AddCheckPoint(checkpointList.ToArray());
-            switch (nItem.GetCharacter())//性格の値によってコース取りを変化させる
+            nItem.AddCheckPoint(checkpointList);
+            switch (nItem.GetCharacter())//性格の値によってチェックポイント内のどこを目がけるか決める
             {
                 case NPCCtrl.NPCCharacter.InCourse:
-                    for (int i = 0; i < checkpointList.Count; i++)
+                    for (int i = 0; i < checkpointList.Length; i++)
                     {
-                        followPointList.Add(GameObject.Find("Point (" + i.ToString("D2") + ")"));
+                        followPointList.Add(checkpointList[i]);
                     }
                     break;
                 case NPCCtrl.NPCCharacter.Nomal:
-                    for (int i = 0; i < checkpointList.Count; i++)
+                    for (int i = 0; i < checkpointList.Length; i++)
                     {
-                        followPointList.Add(GameObject.Find("Point (" + i.ToString("D2") + ")").transform.GetChild(0).gameObject);
+                        followPointList.Add(checkpointList[i].transform.GetChild(0).gameObject);
                     }
                     break;
                 case NPCCtrl.NPCCharacter.OutCourse:
-                    for (int i = 0; i < checkpointList.Count; i++)
+                    for (int i = 0; i < checkpointList.Length; i++)
                     {
-                        followPointList.Add(GameObject.Find("Point (" + i.ToString("D2") + ")").transform.GetChild(1).gameObject);
+                        followPointList.Add(checkpointList[i].transform.GetChild(1).gameObject);
                     }
                     break;
             }
