@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-public class AirRideMove : MonoBehaviour
+public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
 {
     bool isStert;
     Vector3 velocity;//移動するベクトル
@@ -23,8 +23,11 @@ public class AirRideMove : MonoBehaviour
     float charge_Tank;//現在のチャージ量
     [SerializeField]
     float Max_charge;//チャージの最大値
-    bool isPush;//Aボタンが押されている
-    bool pushRelesed;//Aボタンが離された
+    [Header("壁探索RayCast用のLayerMask")]
+    [SerializeField]
+    LayerMask collisionLayer;
+    bool isPush;//Spaceが押されている
+    bool pushRelesed;//Spaceが離された
     
     RaycastHit hit = new RaycastHit();
     
@@ -40,17 +43,20 @@ public class AirRideMove : MonoBehaviour
         if (isStert)
         {
             AccelManage();
-            
+            if (gameObject.tag!="Player") { return; }
+            PushManage();
         }
-        PushManage();
+        
     }
 	private void LateUpdate()
-	{
+	{   
         VelocityUpdate();
         Latemove();
-        CollisionWall_SpeedDown();
+        if (FowerdIsWall()) {
+            CollisionWall_SpeedDown();
+        }
 	}
-    private void AccelManage()
+    private void AccelManage()//速度を管理する関数
     {
         if (speed <= max_Speed && !isPush)//加速しておらず、Aボタンが押されていないとき
         {
@@ -74,23 +80,9 @@ public class AirRideMove : MonoBehaviour
         }
         
     }
-    public bool FowerdIsWall()//壁に当たっているかの判定
+    
+    private void CollisionWall_SpeedDown()//壁に当たった時のコールバック
     {
-        if (Physics.SphereCast(this.transform.position, player_Height, this.transform.forward, out hit)/*正面方向の判定*/)
-        {
-            if (hit.collider.tag != "Wall"&&(hit.collider.tag!="Player"&&hit.collider.tag!="NPC")){ return false;}
-            if (Vector3.SqrMagnitude(hit.point - this.transform.position) < 1f/*rayが当たったポイントと自身のposition間のベクトルの大きさが1未満になったら*/)
-            {
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-    private void CollisionWall_SpeedDown()
-    {
-        if (!FowerdIsWall()) { return; }
-        Debug.Log(this.gameObject.name + "壁に衝突し、減速した");
         this.speed -= speed / 2;
         if (this.speed < 0)
         {
@@ -105,10 +97,10 @@ public class AirRideMove : MonoBehaviour
             ChargePlass();
         }
     }
-    private void PushCtrl()
+    private void PushCtrl()//ボタンが押されているかどうかを管理する関数
     {
-        if (this.gameObject.name != "Player") { return; }
-        if (/*Gamepad.current.buttonEast.isPressed||*/Input.GetKey(KeyCode.Space))//Aボタン or Spaceが押されていたら
+        if (this.gameObject.tag != "Player") { return; }//プレイヤー以外の場合は操作無効
+        if (Input.GetKey(KeyCode.Space))//Aボタン or Spaceが押されていたら
         {
             isPush = true;
         }
@@ -117,7 +109,7 @@ public class AirRideMove : MonoBehaviour
             isPush = false;
         }
 
-        if (/*Gamepad.current.buttonEast.wasReleasedThisFrame||*/Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             pushRelesed = true;
         }
@@ -140,11 +132,25 @@ public class AirRideMove : MonoBehaviour
     private void Latemove() {
        this.transform.position += velocity*Time.deltaTime;//Velocityをもとに移動
     }
-    private void Race_Start()
+    
+    public bool FowerdIsWall()//壁に当たっているかの判定
+    {
+        if (Physics.SphereCast(this.transform.position, player_Height, this.transform.forward, out hit)/*正面方向の判定*/)
+        {
+            if (hit.collider.tag != "Wall" && (hit.collider.tag != "Player" && hit.collider.tag != "NPC")) { return false; }
+            if (Vector3.SqrMagnitude(hit.point - this.transform.position) < 1f/*rayが当たったポイントと自身のposition間のベクトルの大きさが1未満になったら*/)
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    //以下GetterPutter関数
+    public void Race_Start()
     { 
         isStert=true;
     }
-    //以下GetterPutter関数
     public float GetPlayer_Height()
     {
         return player_Height;

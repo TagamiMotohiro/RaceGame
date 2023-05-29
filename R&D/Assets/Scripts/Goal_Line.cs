@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Goal_Line : MonoBehaviour
 {
-    public GameObject Manager;
+    [SerializeField]
+    float rayLength;
+    [SerializeField]
+    RaceManeger maneger;
+    [SerializeField]
+    LayerMask playerMask;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,20 +19,16 @@ public class Goal_Line : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.right);
+        Ray ray = new Ray(transform.position, transform.right*rayLength);
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.right);
-        if (Physics.Raycast(ray, out hit))
+        Debug.DrawLine(transform.position,transform.position+transform.right*10);
+        if (Physics.Raycast(ray, out hit,playerMask))
         {
             if (hit.collider.gameObject.name == "Player")
             {
-                Manager.SendMessage("Lap");
+                maneger.Lap();
                 this.gameObject.SetActive(false);
             }
         }
-    }
-    void Reload()
-    { 
-        this.gameObject.SetActive(true);
     }
 }

@@ -4,101 +4,130 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class RaceManeger : MonoBehaviour
+ public　class RaceManeger : MonoBehaviour //レースの流れを管理するクラス
+ //2023年5月28日に修正を行いました
 {
-    public static float Goal_Time;
-    public float Goal_Time_Second;
-    public int Goal_minute;
+    static float goalTime;
+    float goalTime_Second;
+    int goalTime_minute;
     bool isStert;
     bool isGoal;
-    bool timer_Stert;
-    public float count_Doun;
-    public float stert_Time;
-    public int count_Num;
-    public int goal_Lap;
-    public int now_Lap;
+    float countDoun;
+    float stert_Time;
+    int count_Num;
+    [Header("ゴールまでに何周するか")]
     [SerializeField]
-    private List<GameObject>player=new List<GameObject>();
-    public GameObject goal_Line;
-    public GameObject goal_guard;
-    public GameObject goal_Text;
-    public GameObject scene_Maneger;
-    public TextMeshProUGUI countDoun_Text;
-    public TextMeshProUGUI time_Text;
+    int goal_Lap;
+    int now_Lap;
+    [SerializeField]
+    List<AirRideMove>player=new List<AirRideMove>();
+    [Header("ゴール関連")]
+    [SerializeField]
+    GameObject goal_Line;
+    [SerializeField]
+    GameObject goal_guard;
+    [Header("テキスト")]
+    [SerializeField]
+    TextMeshProUGUI countDoun_Text;
+    [SerializeField]
+    TextMeshProUGUI time_Text;
     // Start is called before the first frame update
     void Start()
     {
-        goal_Line = GameObject.Find("Goal_Line");
+        StartCoroutine(StartCount());
         goal_Line.SetActive(false);
-        Goal_Time_Second = 0;
-        Goal_minute = 0;
+        goalTime = 0;
+        goalTime_Second = 0;
+        goalTime_minute = 0;
         now_Lap = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (now_Lap == goal_Lap)
+        if (now_Lap == goal_Lap)//目標ラップに到達したら
         {
-            isGoal = true;
-            goal_Text.SetActive(true);
-            Debug.Log("GOAL");
-            Invoke("Message_Goal",5f);
+            Goal();
         }
-        Stert_Count();
         Timer();
     }
-    void Stert_Count()
+    void Goal()//ゴールした際の処理の関数
     {
-        if (isStert == false)
+        //ゴールした旨のテキスト表示
+        isGoal = true;
+        countDoun_Text.text = "GOAL";
+        countDoun_Text.gameObject.SetActive(true);
+        Debug.Log("GOAL");
+    }
+    //void Stert_Count()
+    //{
+    //    if (isStert == false)
+    //    {
+    //        countDoun -= Time.deltaTime;//時間減少＆文字列に反映
+    //        count_Num = (int)countDoun+1;
+    //        countDoun_Text.text = count_Num.ToString();
+    //        if (countDoun < 0)
+    //        {
+    //            countDoun_Text.text = "Start";
+    //            isStert = true;
+    //            Destroy(countDoun_Text);
+    //            for (int i = 0; i < player.Count; i++) {
+    //                player[i].SendMessage("Race_Start");
+    //            }
+    //            stert_Time = Time.time;
+    //        }
+    //    }
+    //}
+    IEnumerator StartCount()//カウントダウン
+    {
+        while (!isStert)
         {
-            count_Doun -= Time.deltaTime;
-            count_Num = (int)count_Doun+1;
+            countDoun -= Time.deltaTime;//カウント減少+文字列に反映
+            count_Num = (int)countDoun + 1;//
             countDoun_Text.text = count_Num.ToString();
-            if (count_Doun < 0)
+            if (countDoun < 0)//カウントが0になったら開始
             {
                 countDoun_Text.text = "Start";
                 isStert = true;
-                Destroy(countDoun_Text);
-                for (int i = 0; i < player.Count; i++) {
-                    player[i].SendMessage("Race_Start");
+                for (int i = 0; i < player.Count; i++)
+                {
+                    player[i].Race_Start();
                 }
-                stert_Time = Time.time;
+                yield return new WaitForSeconds(1);
+                //しばらく待ってからテキストを消す
+                countDoun_Text.gameObject.SetActive(false);
             }
+            yield return null;
         }
     }
     void Timer()
     {
-        if (isStert&&!isGoal)
+        if (isStert&&!isGoal)//タイマーがスタートしていてかつゴールしてないとき
         {
-            Goal_Time = Time.time - stert_Time;
-            Goal_Time_Second =Goal_Time-Goal_minute*60;
-            time_Text.text = Goal_minute+":"+Goal_Time_Second.ToString("00");
-            //time_Text.text = new TimeSpan(0,0,(int)Goal_Time).ToString();
+            //時間を分：秒にフォーマットして表示
+            goalTime = Time.time - stert_Time;
+            goalTime_Second =goalTime-goalTime_minute*60;
+            time_Text.text = goalTime_minute+":"+goalTime_Second.ToString("00");
         }
-        if (Goal_Time_Second > 60)
+        if (goalTime_Second > 60)
         {
-            Goal_minute++;
+            goalTime_minute++;
         }
     }
-    void Lap()
+    public void Lap()
     {
         now_Lap++;
         goal_guard.SetActive(true);
         Debug.Log("LAP");
     }
-    void Reload()
+    public void SetCanGall()//ほかのクラスからのコールバックを受け取ってゴール可能にする
     { 
         goal_Line.SetActive(true);
         goal_guard.SetActive(false);
     }
-    void Message_Goal()
+	static TimeSpan Get_Goal_Time()
     {
-        scene_Maneger.SendMessage("Load_Ranking");
-	}
-	public static TimeSpan Get_Goal_Time()
-	{
-        TimeSpan Goal_TimeSpan = new TimeSpan(0,0,0,0,(int)Goal_Time);  
+        TimeSpan Goal_TimeSpan = new TimeSpan(0,0,0,0,(int)goalTime);  
         return Goal_TimeSpan;
     }
 }

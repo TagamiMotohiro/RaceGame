@@ -6,7 +6,7 @@ public class GetGround : MonoBehaviour
 {
     private RaycastHit hit;
     [SerializeField]
-    private AirRideMove moveScript;//プッシュされてるか確認用
+    private AirRideMove moveScript;
     public float player_height;//プレイヤーの身長（浮遊してる分含め）
     public float fall_Speed;//落下速度
     float origin_FallSpeed;//初期の落下速度

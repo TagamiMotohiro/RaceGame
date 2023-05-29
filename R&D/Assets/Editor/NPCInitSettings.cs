@@ -9,6 +9,7 @@ public class NPCInitSettings : MonoBehaviour
     // Start is called before the first frame update
     public static void NPCInit()
     {
+
         GameObject[] NPClist = GameObject.FindGameObjectsWithTag("NPC");
         GameObject[] checkpointList = GameObject.FindGameObjectsWithTag("CheckPoint");
         //NPCとチェックポイントを取得

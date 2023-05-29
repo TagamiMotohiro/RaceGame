@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goal_Reload : MonoBehaviour
+public class Goal_Reload : MonoBehaviour //2023îN5åé28ì˙Ç…èCê≥ÇçsÇ¢Ç‹ÇµÇΩÅB
 {
-    public GameObject Manager;
+    [SerializeField]
+    float rayLength;
+    [SerializeField]
+    RaceManeger manager;
+    [SerializeField]
+    LayerMask PlayerLayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,14 +19,15 @@ public class Goal_Reload : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.right);
+        Ray ray = new Ray(transform.position, transform.right*rayLength);
         RaycastHit hit;
         Debug.DrawRay(transform.position, transform.right);
-        if (Physics.Raycast(ray, out hit))
+        Debug.DrawLine(transform.position, transform.position + transform.right * 10);
+        if (Physics.Raycast(ray, out hit,PlayerLayer))
         {
-            if (hit.collider.gameObject.name == "Player")
+            if (hit.collider.gameObject.tag == "Player")
             {
-                Manager.SendMessage("Reload");
+                manager.SetCanGall();
                 Debug.Log("Reloaded");
             }
         }
