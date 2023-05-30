@@ -7,28 +7,37 @@ public class Goal_Line : MonoBehaviour
     [SerializeField]
     float rayLength;
     [SerializeField]
-    RaceManeger maneger;
+    protected RaceManeger manager;
     [SerializeField]
-    LayerMask playerMask;
+    LayerMask PlayerLayer;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(transform.position, transform.right * rayLength);
+    }
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.right*rayLength);
+        Ray ray = new Ray(transform.position, transform.right);
         RaycastHit hit;
-        Debug.DrawLine(transform.position,transform.position+transform.right*10);
-        if (Physics.Raycast(ray, out hit,playerMask))
+        if (Physics.Raycast(ray, out hit, rayLength, PlayerLayer))
         {
-            if (hit.collider.gameObject.name == "Player")
+            Debug.Log(hit.collider.tag);
+            if (hit.collider.gameObject.tag == "Player")
             {
-                maneger.Lap();
-                this.gameObject.SetActive(false);
+                LineHitCall();
             }
         }
+    }
+    protected virtual void LineHitCall()
+    {
+        Debug.Log("Lap");
+        manager.Lap();
+        gameObject.SetActive(false);
     }
 }

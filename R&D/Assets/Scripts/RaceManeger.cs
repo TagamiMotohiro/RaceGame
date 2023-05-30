@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 
- public　class RaceManeger : MonoBehaviour //レースの流れを管理するクラス
+ public　class RaceManeger : MonoBehaviour //レースの流れを管理するクラス　テキストへの処理も行う
  //2023年5月28日に修正を行いました
 {
     static float goalTime;
@@ -12,6 +12,8 @@ using System;
     int goalTime_minute;
     bool isStert;
     bool isGoal;
+    [Header("スタートカウント何秒するか")]
+    [SerializeField]
     float countDoun;
     float stert_Time;
     int count_Num;
@@ -31,6 +33,8 @@ using System;
     TextMeshProUGUI countDoun_Text;
     [SerializeField]
     TextMeshProUGUI time_Text;
+    [SerializeField]
+    TextMeshProUGUI lap_Text;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +53,11 @@ using System;
         {
             Goal();
         }
+        lap_Text.text = now_Lap.ToString() + "/" + goal_Lap.ToString();
+        if (now_Lap - goal_Lap == 1)
+        {
+            lap_Text.color = Color.red;
+        }
         Timer();
     }
     void Goal()//ゴールした際の処理の関数
@@ -59,25 +68,6 @@ using System;
         countDoun_Text.gameObject.SetActive(true);
         Debug.Log("GOAL");
     }
-    //void Stert_Count()
-    //{
-    //    if (isStert == false)
-    //    {
-    //        countDoun -= Time.deltaTime;//時間減少＆文字列に反映
-    //        count_Num = (int)countDoun+1;
-    //        countDoun_Text.text = count_Num.ToString();
-    //        if (countDoun < 0)
-    //        {
-    //            countDoun_Text.text = "Start";
-    //            isStert = true;
-    //            Destroy(countDoun_Text);
-    //            for (int i = 0; i < player.Count; i++) {
-    //                player[i].SendMessage("Race_Start");
-    //            }
-    //            stert_Time = Time.time;
-    //        }
-    //    }
-    //}
     IEnumerator StartCount()//カウントダウン
     {
         while (!isStert)
