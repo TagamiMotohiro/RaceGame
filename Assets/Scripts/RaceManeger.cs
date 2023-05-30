@@ -51,7 +51,7 @@ using System;
     {
         if (now_Lap == goal_Lap)//目標ラップに到達したら
         {
-            Goal();
+            StartCoroutine(Goal());
         }
         lap_Text.text = now_Lap.ToString() + "/" + goal_Lap.ToString();
         if (now_Lap - goal_Lap == 1)
@@ -60,13 +60,15 @@ using System;
         }
         Timer();
     }
-    void Goal()//ゴールした際の処理の関数
+    IEnumerator Goal()//ゴールした際の処理の関数
     {
         //ゴールした旨のテキスト表示
         isGoal = true;
         countDoun_Text.text = "GOAL";
         countDoun_Text.gameObject.SetActive(true);
         Debug.Log("GOAL");
+        yield return new WaitForSeconds(5);
+        SceneLoder.LoadResult();
     }
     IEnumerator StartCount()//カウントダウン
     {
@@ -111,13 +113,12 @@ using System;
         Debug.Log("LAP");
     }
     public void SetCanGall()//ほかのクラスからのコールバックを受け取ってゴール可能にする
-    { 
+    {
         goal_Line.SetActive(true);
         goal_guard.SetActive(false);
     }
-	static TimeSpan Get_Goal_Time()
+    public static float GetTime()
     {
-        TimeSpan Goal_TimeSpan = new TimeSpan(0,0,0,0,(int)goalTime);  
-        return Goal_TimeSpan;
+        return goalTime;
     }
 }

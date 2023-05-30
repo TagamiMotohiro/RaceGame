@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoder : MonoBehaviour
 {
-	public void Load_MainGame()
+	public static void LoadMainGame()
 	{
 		SceneManager.LoadScene("Track");
 	}
-	public void Load_Ranking()
+	public static void LoadResult()
 	{
 		SceneManager.LoadScene("Result");
 	}
