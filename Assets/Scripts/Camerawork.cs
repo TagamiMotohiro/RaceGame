@@ -20,8 +20,9 @@ public class Camerawork : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //1フレームに回転できる角度を制限する
         this.transform.position = Vector3.SmoothDamp(this.transform.position,camera_Pos.transform.position,ref camera_Velocity,camera_Speed*Time.deltaTime);
-        if (/*Quaternion.LookRotation(player.transform.position-this.transform.position).eulerAngles.magnitude<0.1f*/true)//カメラがプレイヤーからずれていたら
+        if (true)//カメラがプレイヤーからずれていたら
         {
             camerarotate();
         }

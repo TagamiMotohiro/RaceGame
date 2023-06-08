@@ -7,10 +7,14 @@ public class GetGround : MonoBehaviour
     private RaycastHit hit;
     [SerializeField]
     private AirRideMove moveScript;
-    public float player_height;//プレイヤーの身長（浮遊してる分含め）
-    public float fall_Speed;//落下速度
-    float origin_FallSpeed;//初期の落下速度
-    bool isground = true;//接地判定 
+    [SerializeField]
+    float player_height;//プレイヤーの身長（浮遊してる分含め）
+    [SerializeField]
+    float fall_Speed;//落下速度
+    //float origin_FallSpeed;//初期の落下速度
+    [Header("接地回転が反応する角度のマックス")]
+    [SerializeField]
+    float maxSlopeAngle;
    
     public float senkai;//旋回性能
     float horizontal;//x軸入力取得
@@ -21,7 +25,7 @@ public class GetGround : MonoBehaviour
     {
         moveScript = this.GetComponent<AirRideMove>();
         origin_Senkai = senkai;
-        origin_FallSpeed = fall_Speed;//最初の落下速度を代入
+        //origin_FallSpeed = fall_Speed;//最初の落下速度を代入
     }
     
     // Update is called once per frame
@@ -32,17 +36,12 @@ public class GetGround : MonoBehaviour
         Ray ray = new Ray(this.transform.position, Vector3.down);
         if (Physics.Raycast(ray,out hit, player_height,3))//自身の存在するレイヤーを無視しrayを投射し判定を取得
         {
-            if (hit.collider.tag == "CheckPoint") 
-            { return; }
-            isground = true;
-        }
-        else
-        {
-            isground=false;
-        }
-        if (isground)
-        {
-            IsGround_Rotate();
+            //とがっていたり突き出ていたりするポイントに当たった時にガクッと回転していたのでそれを抑制
+            float slopeAngle = Vector3.Angle(transform.up,hit.normal);
+            //Ray接触地点と自分のUpの角度を算出
+            if (maxSlopeAngle > slopeAngle) {//一定未満だったら回転
+                IsGround_Rotate();
+            }
         }
         else
         {
@@ -56,24 +55,24 @@ public class GetGround : MonoBehaviour
 	void Fall()
     {  
         this.transform.position -=new Vector3(0, fall_Speed*Time.deltaTime, 0);//落下速度分自身のy座標を減少
-        if (moveScript.GetIsPush())
-        {
-            if (fall_Speed == origin_FallSpeed/*プッシュされていたら＆落下速度が変わっていなかったら*/)
-            {
-                fall_Speed = 50;//落下速度上昇
-            }
-        }
-        else
-        {
-            fall_Speed = origin_FallSpeed;
-        }
+        //if (moveScript.GetIsPush())
+        //{
+        //    if (fall_Speed == origin_FallSpeed/*プッシュされていたら＆落下速度が変わっていなかったら*/)
+        //    {
+        //        fall_Speed = 50;//落下速度上昇
+        //    }
+        //}
+        //else
+        //{
+        //    fall_Speed = origin_FallSpeed;
+        //}
     }
     void IsGround_Rotate()
     {
-		//接地している
-		Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
+        //接地している
+        Quaternion q = Quaternion.FromToRotation(Vector3.up, hit.normal);
         //床の法線ベクトルとY軸単位ベクトルから接地するための回転を生成
-		this.transform.rotation = q * this.transform.rotation;
+        this.transform.rotation = q * this.transform.rotation;
         //現在の回転に対して掛け合わせる
 
 		//pos.y = hit.point.y + player_height;

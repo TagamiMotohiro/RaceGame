@@ -45,16 +45,17 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
             AccelManage();
             if (gameObject.tag!="Player") { return; }
             PushManage();
+            VelocityUpdate();
+            if (FowerdIsWall()) {
+                CollisionWall_SpeedDown();
+            }
+            MacineMove();
         }
         
     }
 	private void LateUpdate()
 	{   
-        VelocityUpdate();
-        Latemove();
-        if (FowerdIsWall()) {
-            CollisionWall_SpeedDown();
-        }
+        
 	}
     private void AccelManage()//速度を管理する関数
     {
@@ -94,7 +95,7 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
         PushCtrl();
         if (isPush)
         {
-            ChargePlass();
+            ChargeTankPlass();
         }
     }
     private void PushCtrl()//ボタンが押されているかどうかを管理する関数
@@ -118,7 +119,7 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
             pushRelesed = false;
         }
     }
-    private void ChargePlass()
+    private void ChargeTankPlass()//チャージされているときにタンクにパワーを加算
     {
         if (charge_Tank <= Max_charge)
         {
@@ -129,7 +130,7 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
 	{
 	    velocity = (this.transform.forward*speed); //すべてのUpdate終了後に最終的に算出された数値を移動ベクトルに代入
     }
-    private void Latemove() {
+    private void MacineMove() {
        this.transform.position += velocity*Time.deltaTime;//Velocityをもとに移動
     }
     
