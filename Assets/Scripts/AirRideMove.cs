@@ -43,8 +43,7 @@ public class AirRideMove : MonoBehaviour@//5Œ28“ú‚ÉC³‚ğs‚¢‚Ü‚µ‚½B
         if (isStert)
         {
             AccelManage();
-            if (gameObject.tag!="Player") { return; }
-            PushManage();
+            if (gameObject.tag=="Player") { PushManage(); }
             VelocityUpdate();
             if (FowerdIsWall()) {
                 CollisionWall_SpeedDown();

@@ -15,7 +15,7 @@ using System;
     [Header("スタートカウント何秒するか")]
     [SerializeField]
     float countDoun;
-    float stert_Time;
+    float start_Time;
     int count_Num;
     [Header("ゴールまでに何周するか")]
     [SerializeField]
@@ -80,6 +80,7 @@ using System;
             if (countDoun < 0)//カウントが0になったら開始
             {
                 countDoun_Text.text = "Start";
+                start_Time = Time.time;
                 isStert = true;
                 for (int i = 0; i < player.Count; i++)
                 {
@@ -97,7 +98,7 @@ using System;
         if (isStert&&!isGoal)//タイマーがスタートしていてかつゴールしてないとき
         {
             //時間を分：秒にフォーマットして表示
-            goalTime = Time.time - stert_Time;
+            goalTime = Time.time - start_Time;
             goalTime_Second =goalTime-goalTime_minute*60;
             time_Text.text = goalTime_minute+":"+goalTime_Second.ToString("00");
         }
