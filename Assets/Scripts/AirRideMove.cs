@@ -28,7 +28,11 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
     LayerMask collisionLayer;
     bool isPush;//Spaceが押されている
     bool pushRelesed;//Spaceが離された
-    
+    [Header("壁と認識する距離の閾値")]
+    [SerializeField]
+    float wallhreshold;
+
+
     RaycastHit hit = new RaycastHit();
     
     // Start is called before the first frame update
@@ -138,7 +142,7 @@ public class AirRideMove : MonoBehaviour　//5月28日に修正を行いました。
         if (Physics.SphereCast(this.transform.position, player_Height, this.transform.forward, out hit)/*正面方向の判定*/)
         {
             if (hit.collider.tag != "Wall" && (hit.collider.tag != "Player" && hit.collider.tag != "NPC")) { return false; }
-            if (Vector3.SqrMagnitude(hit.point - this.transform.position) < 1f/*rayが当たったポイントと自身のposition間のベクトルの大きさが1未満になったら*/)
+            if (Vector3.SqrMagnitude(hit.point - this.transform.position) < wallhreshold/*rayが当たったポイントと自身のposition間のベクトルの大きさが閾値未満になったら*/)
             {
                 return true;
             }

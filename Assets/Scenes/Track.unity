@@ -171,7 +171,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25054
+  m_Name: pb_Mesh31818
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -979,7 +979,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25498
+  m_Name: pb_Mesh32262
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1556,6 +1556,10 @@ PrefabInstance:
       propertyPath: maxSlopeAngle
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2055732852, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: filled_Threshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: accel
       value: 5
@@ -1563,6 +1567,10 @@ PrefabInstance:
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: kasoku
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: wallhreshold
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: player_Height
@@ -4647,7 +4655,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25530
+  m_Name: pb_Mesh32294
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5278,8 +5286,16 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2055732852, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: fall_Speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055732852, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: maxSlopeAngle
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055732852, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: filled_Threshold
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: accel
@@ -5288,6 +5304,10 @@ PrefabInstance:
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: kasoku
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: wallhreshold
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: player_Height
@@ -7689,6 +7709,10 @@ PrefabInstance:
       propertyPath: maxSlopeAngle
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2055732852, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: filled_Threshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: accel
       value: 5
@@ -7701,6 +7725,10 @@ PrefabInstance:
       propertyPath: EroorWindow
       value: 
       objectReference: {fileID: 1130886147}
+    - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
+      propertyPath: wallhreshold
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2055732854, guid: d0284c039e0e67248854a2a3c6c1c32a, type: 3}
       propertyPath: player_Height
       value: 1
@@ -9880,7 +9908,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24968
+  m_Name: pb_Mesh31732
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12622,6 +12650,10 @@ PrefabInstance:
     - target: {fileID: 6907739621857780968, guid: 6ee6eb38db0b06241b84f92c548fddd4, type: 3}
       propertyPath: max_Speed
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6907739621857780968, guid: 6ee6eb38db0b06241b84f92c548fddd4, type: 3}
+      propertyPath: wallhreshold
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6907739621857780968, guid: 6ee6eb38db0b06241b84f92c548fddd4, type: 3}
       propertyPath: player_Height

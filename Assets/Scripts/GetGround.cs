@@ -15,7 +15,10 @@ public class GetGround : MonoBehaviour
     [Header("接地回転が反応する角度のマックス")]
     [SerializeField]
     float maxSlopeAngle;
-   
+    [Header("地形埋まり許容の閾値")]
+    [SerializeField]
+    float filled_Threshold;
+
     public float senkai;//旋回性能
     float horizontal;//x軸入力取得
     private float origin_Senkai;
@@ -86,7 +89,6 @@ public class GetGround : MonoBehaviour
 	}
     void filled_correction()//地形埋まり防止
     {
-        //Debug.Log(this.transform.position.y-hit.point.y);
         if (this.transform.position.y - hit.point.y < player_height - 0.1f)//プレイヤーが（プレイヤーの身長-誤差許容分）分浮いていなければ
         {
             //Debug.Log("埋まっております");
